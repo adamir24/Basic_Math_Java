@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_basic_math_java" default="compile.module.basic_math_java">
+  <dirname property="module.basic_math_java.basedir" file="${ant.file.module_basic_math_java}"/>
+  
+  <property name="module.jdk.home.basic_math_java" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.basic_math_java" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.basic_math_java" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.basic_math_java" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="basic_math_java.output.dir" value="${module.basic_math_java.basedir}/out/production/Basic Math Java"/>
+  <property name="basic_math_java.testoutput.dir" value="${module.basic_math_java.basedir}/out/test/Basic Math Java"/>
+  
+  <path id="basic_math_java.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="basic_math_java.module.production.classpath">
+    <path refid="${module.jdk.classpath.basic_math_java}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="basic_math_java.runtime.production.module.classpath">
+    <pathelement location="${basic_math_java.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="basic_math_java.module.classpath">
+    <path refid="${module.jdk.classpath.basic_math_java}"/>
+    <pathelement location="${basic_math_java.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="basic_math_java.runtime.module.classpath">
+    <pathelement location="${basic_math_java.testoutput.dir}"/>
+    <pathelement location="${basic_math_java.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.basic_math_java">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.basic_math_java">
+    <patternset refid="excluded.from.module.basic_math_java"/>
+  </patternset>
+  
+  <path id="basic_math_java.module.sourcepath">
+    <dirset dir="${module.basic_math_java.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.basic_math_java" depends="compile.module.basic_math_java.production,compile.module.basic_math_java.tests" description="Compile module Basic Math Java"/>
+  
+  <target name="compile.module.basic_math_java.production" depends="register.custom.compilers" description="Compile module Basic Math Java; production classes">
+    <mkdir dir="${basic_math_java.output.dir}"/>
+    <javac2 destdir="${basic_math_java.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.basic_math_java}/javac">
+      <compilerarg line="${compiler.args.basic_math_java}"/>
+      <bootclasspath refid="basic_math_java.module.bootclasspath"/>
+      <classpath refid="basic_math_java.module.production.classpath"/>
+      <src refid="basic_math_java.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.basic_math_java"/>
+    </javac2>
+    
+    <copy todir="${basic_math_java.output.dir}">
+      <fileset dir="${module.basic_math_java.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.basic_math_java.tests" depends="register.custom.compilers,compile.module.basic_math_java.production" description="compile module Basic Math Java; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.basic_math_java" description="cleanup module">
+    <delete dir="${basic_math_java.output.dir}"/>
+    <delete dir="${basic_math_java.testoutput.dir}"/>
+  </target>
+</project>
